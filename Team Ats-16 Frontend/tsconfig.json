@@ -1,12 +1,14 @@
 {
-  // "extends": "./tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
-    "jsx": "react-jsx"
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noEmit": true
   },
   "include": ["src"]
 }

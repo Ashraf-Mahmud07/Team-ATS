@@ -23,7 +23,7 @@ const AboutUs: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get(`${process.env.VITE_API_BASE_URL}/users`);
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/users`);
         const sorted = res.data.data.sort(
           (a: User, b: User) =>
             new Date(a.createdAt || "").getTime() -

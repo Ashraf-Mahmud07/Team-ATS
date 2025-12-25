@@ -19,7 +19,6 @@ const Navbar: React.FC = () => {
     { name: "Activities", to: "/activities" },
     { name: "Notice", to: "/notice" },
     { name: "Contact", to: "/contact" },
-    { name: "Login", to: "/login" },
   ];
 
   if (!hasProfile) {
