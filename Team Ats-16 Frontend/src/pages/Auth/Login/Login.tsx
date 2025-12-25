@@ -102,7 +102,7 @@ const CreateProfile = () => {
       </div>
 
       {/* FORM CARD */}
-      <div className="absolute z-10 bg-white p-6 sm:p-10 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div className="absolute z-10 bg-white p-6 sm:p-10 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
         <h2 className="text-center text-[#044039] mb-6 sm:mb-8 text-2xl sm:text-3xl font-semibold tracking-[1px] sm:tracking-[2px] uppercase">
           Create Profile

@@ -73,11 +73,11 @@ const ActivitiesPage: React.FC = () => {
   const gridActivities = showAll ? activities : activities.slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-emerald-50 p-8">
+    <div className="min-h-screen bg-emerald-50 py-8">
       <h1 className="text-3xl font-bold text-emerald-700 mb-6 text-center">Activities</h1>
 
       {/* Activities Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {gridActivities.map((act) => (
           <div
             key={act.id}
