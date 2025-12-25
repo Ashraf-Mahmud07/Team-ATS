@@ -30,6 +30,7 @@ export interface TUser {
   phone?: string;
   password: string;
   isVerified?: boolean;
+  status:Status;
   presentAddress?: string;
   permanentAddress?: string;
   profession?: string;

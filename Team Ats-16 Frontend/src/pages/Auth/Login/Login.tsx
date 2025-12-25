@@ -58,7 +58,7 @@ const CreateProfile = () => {
       if (image) formData.append("image", image);
 
       const res = await axios.post(
-        "http://localhost:5000/api/users/register",
+        `${process.env.VITE_API_BASE_URL}/users/register`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
