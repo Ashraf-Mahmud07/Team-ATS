@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use(
 	cors({
-		origin: ['http://localhost:5173', 'http://localhost:3000', 'https://dashboard-goal-client.vercel.app'],
+		origin: ['http://localhost:5173', 'http://localhost:3000', 'https://team-ats-16-frontend.vercel.app'],
 		credentials: true
 	})
 );
