@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { JSX, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Heart, Sparkles, Leaf, BookOpen, Droplet, Users } from "lucide-react";
