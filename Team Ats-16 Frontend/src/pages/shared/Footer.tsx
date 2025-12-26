@@ -15,12 +15,16 @@ const Footer: React.FC = () => {
         <path
           fill="rgba(255,255,255,0.05)"
           d="M0,224L48,213.3C96,203,192,181,288,160C384,139,480,117,576,128C672,139,768,181,864,208C960,235,1056,245,1152,229.3C1248,213,1344,171,1392,149.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-        ></path>
+        />
       </svg>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-10 md:gap-0">
-        {/* Left Side: Logo + Description */}
-        <div className="flex flex-col items-start space-y-3 md:w-1/3">
+      {/* MAIN CONTENT */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-16
+        flex flex-row flex-wrap justify-center items-center text-center gap-8
+        md:flex-row md:justify-between md:items-center md:text-left md:gap-0">
+
+        {/* LOGO + DESCRIPTION */}
+        <div className="flex flex-col items-center md:items-start space-y-3 md:w-1/3">
           <div className="flex items-center space-x-3">
             <img
               src={atsLogo}
@@ -31,91 +35,48 @@ const Footer: React.FC = () => {
               TEAM ATS 16
             </h2>
           </div>
-          <p className="text-gray-200 text-sm sm:text-base leading-relaxed">
+
+          <p className="text-gray-200 text-sm sm:text-base leading-relaxed max-w-xs md:max-w-none">
             Team ATS 16 – A group of friends passionate about social activism,
             making a positive difference together.
           </p>
         </div>
 
-        {/* Right Side: Footer Links */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 md:gap-8 md:w-2/3">
+        {/* FOOTER LINKS */}
+        <div className="grid grid-cols-3 gap-4 md:gap-8 md:w-2/3">
           <div>
             <h3 className="text-white mb-2 font-semibold">Menu</h3>
             <ul className="space-y-1 text-sm sm:text-base text-gray-200">
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  Projects
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  Gallery
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  Blogs
-                </a>
-              </li>
+              <li><a href="#" className="hover:text-yellow-400">About Us</a></li>
+              <li><a href="#" className="hover:text-yellow-400">Projects</a></li>
+              <li><a href="#" className="hover:text-yellow-400">Gallery</a></li>
+              <li><a href="#" className="hover:text-yellow-400">Blogs</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-white mb-2 font-semibold">Connect</h3>
             <ul className="space-y-1 text-sm sm:text-base text-gray-200">
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  Regular Donor
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  Lifetime Donor
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  Volunteer
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  Career
-                </a>
-              </li>
+              <li><a href="#" className="hover:text-yellow-400">Regular Donor</a></li>
+              <li><a href="#" className="hover:text-yellow-400">Lifetime Donor</a></li>
+              <li><a href="#" className="hover:text-yellow-400">Volunteer</a></li>
+              <li><a href="#" className="hover:text-yellow-400">Career</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-white mb-2 font-semibold">Others</h3>
             <ul className="space-y-1 text-sm sm:text-base text-gray-200">
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  Terms of Condition
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-yellow-400 transition">
-                  Privacy Policy
-                </a>
-              </li>
+              <li><a href="#" className="hover:text-yellow-400">Contact</a></li>
+              <li><a href="#" className="hover:text-yellow-400">Terms of Condition</a></li>
+              <li><a href="#" className="hover:text-yellow-400">Privacy Policy</a></li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* Bottom Divider */}
-      <div className="relative border-t border-gray-700 pt-4 text-center text-sm sm:text-base text-gray-300">
+      {/* BOTTOM BAR */}
+      <div className="relative border-t border-gray-700 py-4 text-center text-sm sm:text-base text-gray-300">
         © {new Date().getFullYear()} TEAM ATS 16. All rights reserved.
       </div>
     </footer>
