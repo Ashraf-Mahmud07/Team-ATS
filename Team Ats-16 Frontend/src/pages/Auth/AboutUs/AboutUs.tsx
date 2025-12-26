@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import { Facebook, Instagram } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import AppLoader from "../../../components/common/AppLoader";
 
 interface User {
   _id?: string;
@@ -19,9 +20,11 @@ interface User {
 
 const AboutUs: React.FC = () => {
   const [profiles, setProfiles] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setIsLoading(true)
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/users`);
         const sorted = res.data.data.sort(
@@ -30,8 +33,10 @@ const AboutUs: React.FC = () => {
             new Date(b.createdAt || "").getTime()
         );
         setProfiles(sorted);
+        setIsLoading(false)
       } catch (err) {
         console.error("Error fetching users:", err);
+        setIsLoading(false)
       }
     };
     fetchUsers();
@@ -51,7 +56,8 @@ const AboutUs: React.FC = () => {
           future.
         </p>
 
-        {profiles.length > 0 ? (
+
+        {isLoading ? <AppLoader /> : profiles.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
             {profiles.map((p) => {
               const fbLink =
