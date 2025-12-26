@@ -88,15 +88,20 @@ const ActivitiesPage: React.FC = () => {
     ...Array.from(new Set(activities.map((a) => a.category))),
   ];
 
-  // Highlight one random “Activity of the Month”
   const featured = activities[Math.floor(Math.random() * activities.length)];
+
+  const goToPage = (path: string) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate(path);
+  };
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-emerald-50 via-yellow-50 to-white p-8 overflow-hidden pt-32">
-      {/* Floating glowing background orbs */}
+      {/* Background Orbs */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-100 rounded-full blur-3xl opacity-40 animate-pulse" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-100 rounded-full blur-3xl opacity-40 animate-pulse" />
 
+      {/* Header */}
       <div className="text-center relative z-10">
         <h1 className="text-4xl font-bold text-emerald-700 mb-2">
           Our Activities
@@ -106,7 +111,7 @@ const ActivitiesPage: React.FC = () => {
         </p>
       </div>
 
-      {/* Featured Activity */}
+      {/* Featured */}
       <motion.div
         className="max-w-5xl mx-auto mb-12 p-6 bg-gradient-to-r from-yellow-100 via-emerald-100 to-yellow-50 rounded-2xl shadow-md relative z-10 overflow-hidden"
         initial={{ opacity: 0, y: 50 }}
@@ -116,6 +121,7 @@ const ActivitiesPage: React.FC = () => {
         <div className="absolute top-3 right-4 bg-yellow-400 text-white px-3 py-1 text-xs rounded-full font-semibold">
           🌟 Activity of the Month
         </div>
+
         <div className="flex flex-col md:flex-row items-center gap-6">
           <motion.img
             src={featured.img}
@@ -123,6 +129,7 @@ const ActivitiesPage: React.FC = () => {
             className="w-full md:w-1/2 rounded-xl shadow-md object-cover"
             whileHover={{ scale: 1.05 }}
           />
+
           <div>
             <h2 className="text-2xl font-bold text-emerald-800 mb-2 flex items-center gap-2">
               {featured.icon}
@@ -130,7 +137,7 @@ const ActivitiesPage: React.FC = () => {
             </h2>
             <p className="text-gray-700 mb-3">{featured.desc}</p>
             <button
-              onClick={() => navigate(`/activities/${featured.id}`)}
+              onClick={() => goToPage(`/activities/${featured.id}`)}
               className="px-4 py-2 bg-emerald-500 text-white rounded-lg font-semibold hover:bg-emerald-600 transition"
             >
               Join Now →
@@ -139,7 +146,7 @@ const ActivitiesPage: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Search + Category Filter */}
+      {/* Search & Filter */}
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 mb-8 relative z-10">
         <input
           type="text"
@@ -148,15 +155,17 @@ const ActivitiesPage: React.FC = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="w-full md:w-1/2 p-3 rounded-xl border border-emerald-200 focus:ring-2 focus:ring-emerald-400 outline-none transition"
         />
+
         <div className="flex flex-wrap justify-center gap-2">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition ${filter === cat
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition ${
+                filter === cat
                   ? "bg-emerald-500 text-white"
                   : "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
-                }`}
+              }`}
             >
               {cat}
             </button>
@@ -164,17 +173,16 @@ const ActivitiesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Activity Grid */}
+      {/* Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 relative z-10">
         {filteredActivities.map((activity, index) => (
           <motion.div
             key={activity.id}
-            className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition-transform transform hover:-translate-y-2 border border-transparent hover:border-emerald-200"
+            className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition-transform transform hover:-translate-y-2"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            whileHover={{ rotateY: 8 }}
           >
             <div className="relative h-48 overflow-hidden">
               <motion.img
@@ -182,7 +190,6 @@ const ActivitiesPage: React.FC = () => {
                 alt={activity.title}
                 className="w-full h-full object-cover"
                 whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.4 }}
               />
               <span className="absolute bottom-2 left-2 bg-white/80 text-emerald-700 text-xs font-semibold px-2 py-1 rounded-full">
                 {activity.category}
@@ -197,7 +204,7 @@ const ActivitiesPage: React.FC = () => {
               <p className="text-gray-600 text-sm mb-3">{activity.desc}</p>
 
               <button
-                onClick={() => navigate(`/activities/${activity.id}`)}
+                onClick={() => goToPage(`/activities/${activity.id}`)}
                 className="px-4 py-1.5 bg-yellow-400 text-black text-sm font-medium rounded-lg hover:bg-yellow-500 transition"
               >
                 See More →

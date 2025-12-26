@@ -129,12 +129,7 @@ const DonationCard: React.FC = () => {
           <span className="text-yellow-400">৳{totalDonations.toFixed(2)}</span>
         </p>
 
-        {/* <p className="text-center text-yellow-100 mt-5 text-xs sm:text-sm">
-          You will receive tax relief when you donate.{" "}
-          <a href="#" className="text-yellow-400 underline">
-            Learn more
-          </a>
-        </p> */}
+       
       </div>
 
       {/* POPUP */}

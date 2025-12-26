@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
       </svg>
 
       {/* MAIN CONTENT */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-16
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-10
         flex flex-row flex-wrap justify-center items-center text-center gap-8
         md:flex-row md:justify-between md:items-center md:text-left md:gap-0">
 
