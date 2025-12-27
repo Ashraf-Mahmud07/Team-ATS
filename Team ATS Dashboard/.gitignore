@@ -1,0 +1,86 @@
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build directories
+dist/
+dist-ssr/
+build/
+out/
+.next/
+.cache/
+
+# Environment files
+.env
+.env.local
+.env.dev
+.env.test
+.env.live
+.env*.local
+
+# Secrets
+*.key
+*.pem
+*.crt
+*.cert
+*.pub
+id_rsa
+id_dsa
+*.keystore
+*.jks
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Debug files
+*.exe
+*.dll
+*.obj
+*.pdb
+*.ilk
+*.map
+*.exp
+*.out
+*.app
+
+# Testing
+coverage/
+.nyc_output/
+
+# OS generated files
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE specific
+*.swp
+*.swo
+*~
+.idea_modules/
+.vercel
