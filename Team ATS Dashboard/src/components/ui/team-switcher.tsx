@@ -1,5 +1,5 @@
-import logo from "@/assets/icons/blue-logo.png"
-import logoIcon from "@/assets/icons/logo-icon.png"
+import logo from "@/assets/icons/logo.jpg"
+import logoIcon from "@/assets/icons/logo.jpg"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
 import { cn } from "@/lib/utils"
 

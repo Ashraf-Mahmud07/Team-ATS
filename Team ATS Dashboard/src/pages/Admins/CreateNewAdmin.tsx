@@ -70,9 +70,9 @@ export function CreateNewAdmin() {
                 </DialogHeader>
                 <form
                     onSubmit={handleSubmit}
-                    className="space-y-6 w-full mx-auto py-6 bg-white rounded-2xl"
+                    className="space-y-4 w-full mx-auto py-6 bg-white rounded-2xl"
                 >
-                    <div className="md:flex justify-between items-center gap-3">
+                    <div className="md:flex justify-between gap-3 space-y-4">
                         <div className="space-y-2 w-full">
                             <Label htmlFor="name">Name</Label>
                             <Input
@@ -97,7 +97,7 @@ export function CreateNewAdmin() {
                         </div>
                     </div>
 
-                    <div className="md:flex justify-between gap-2">
+                    <div className="md:flex justify-between gap-3 space-y-4">
                         <div className="space-y-2 w-full">
                             <Label htmlFor="password">Password</Label>
                             <Input

@@ -15,9 +15,9 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <ProtectedLayout>
+      // <ProtectedLayout>
         <Layout />
-      </ProtectedLayout>
+      // </ProtectedLayout>
     ),
     children: [
       { path: "/", element: <AdminList /> },

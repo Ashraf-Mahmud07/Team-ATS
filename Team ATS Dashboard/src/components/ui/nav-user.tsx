@@ -1,4 +1,4 @@
-import logo from "@/assets/icons/logo-icon.png"
+import logo from "@/assets/icons/logo.jpg"
 import {
     Avatar,
     AvatarFallback,
@@ -53,7 +53,7 @@ export function NavUser() {
                         >
                             <Avatar className="h-8 w-8 rounded-lg">
                                 <AvatarImage src={logo} alt={userData?.name} />
-                                <AvatarFallback className="rounded-lg">Preparation</AvatarFallback>
+                                <AvatarFallback className="rounded-lg">Team ATS</AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-semibold">{userData?.name}</span>

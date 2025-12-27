@@ -157,26 +157,12 @@ const AdminList = () => {
     params.append("limit", String(limit));
 
     const query = params.toString();
-    const { data, isLoading, isError, error } = useGetAllAdminsAndModeratorQuery(query, {
+    const { data, isLoading } = useGetAllAdminsAndModeratorQuery(query, {
         refetchOnFocus: true,
     });
 
     if (isLoading) return <Loading />;
-    if (isError) {
-        let errorMessage = "An error occurred.";
-        if (error && "status" in error) {
-            const fetchError = error as FetchBaseQueryError & { data?: { message?: string } };
-            errorMessage = fetchError.data?.message ?? errorMessage;
-        }
-        else if (error && typeof error === "object" && "message" in error) {
-            errorMessage = (error as SerializedError).message ?? errorMessage;
-        }
-        return (
-            <p className="p-4 text-center text-2xl my-4 text-red-500">
-                {errorMessage}
-            </p>
-        );
-    }
+
 
     const users = data?.data?.data || [];
     const totalCount = data?.data?.meta?.total ?? 0;
@@ -185,7 +171,7 @@ const AdminList = () => {
         <div>
             <PageHeader title="Admins" />
             <CreateNewAdmin />
-            <DataTable columns={columns} data={users} />
+            <DataTable message={"No Admins Data Found!"} columns={columns} data={users} />
             <LimitSelector
                 types="Users"
                 totalCount={totalCount}
