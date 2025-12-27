@@ -11,21 +11,18 @@ class AuthController {
         this.tokenService = new TokenService();
         this.authService = new AuthService();
     }
-
     register = async (req, res) => {
         try {
             const user = await this.userService.createUser(req.body);
-            let tokens = {};
-            const { status } = user.response;
-            if (user.response.status) {
-                tokens = await this.tokenService.generateAuthTokens(user.response.data);
-            }
-
-            const { message, data } = user.response;
-            res.status(user.statusCode).send({ status, message, data, tokens });
+            const { status, message, data } = user.response;
+            return res.status(user.statusCode).json({ status, message, data });
         } catch (e) {
             logger.error(e);
-            res.status(httpStatus.BAD_GATEWAY).send(e);
+            return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+                status: false,
+                message: 'Something went wrong!',
+                error: e.message || e
+            });
         }
     };
 
@@ -42,6 +39,7 @@ class AuthController {
     login = async (req, res) => {
         try {
             const { email, password } = req.body;
+            console.log("credentials", email, password)
             const user = await this.authService.loginWithEmailPassword(
                 email.toLowerCase(),
                 password,
@@ -50,11 +48,11 @@ class AuthController {
             const { data } = user.response;
             const { status } = user.response;
             const code = user.statusCode;
-            let tokens = {};
+            let token = {};
             if (user.response.status) {
-                tokens = await this.tokenService.generateAuthTokens(data);
+                token = await this.tokenService.generateAuthTokens(data);
             }
-            res.status(user.statusCode).send({ status, code, message, data, tokens });
+            res.status(user.statusCode).send({ status, code, message, data, token });
         } catch (e) {
             logger.error(e);
             res.status(httpStatus.BAD_GATEWAY).send(e);
@@ -87,7 +85,7 @@ class AuthController {
 
     changePassword = async (req, res) => {
         try {
-            const responseData = await this.userService.changePassword(req.body, req.user.uuid);
+            const responseData = await this.userService.changePassword(req.body, req.user.id);
             res.status(responseData.statusCode).send(responseData.response);
         } catch (e) {
             logger.error(e);

@@ -1,7 +1,5 @@
 const SuperDao = require('./SuperDao');
-const models = require('../models');
-
-const User = models.user;
+const { User } = require('../models');
 
 class UserDao extends SuperDao {
     constructor() {

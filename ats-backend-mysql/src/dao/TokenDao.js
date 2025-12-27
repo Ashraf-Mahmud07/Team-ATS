@@ -1,7 +1,6 @@
 const SuperDao = require('./SuperDao');
-const models = require('../models');
+const { Token } = require('../models');
 
-const Token = models.token;
 
 class TokenDao extends SuperDao {
     constructor() {
@@ -14,6 +13,17 @@ class TokenDao extends SuperDao {
 
     async remove(where) {
         return Token.destroy({ where });
+    }
+
+    async deleteExpired(type) {
+        return Token.destroy({
+            where: {
+                type,
+                expires_at: {
+                    [require('sequelize').Op.lt]: new Date(),
+                },
+            },
+        });
     }
 }
 

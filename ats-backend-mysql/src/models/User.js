@@ -2,34 +2,74 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
         static associate(models) {
-            // define association here
-            //  User.belongsTo(models.agency, { foreignKey: 'agency_id', targetKey: 'id' });
+            // Define associations here
+            // For example: User.hasOne(models.UserProfile, { foreignKey: 'user_id', as: 'profile' });
+            User.hasOne(models.UserProfile, { foreignKey: 'user_id', as: 'profile' });
         }
     }
 
     User.init(
         {
-            uuid: DataTypes.UUID,
-            first_name: DataTypes.STRING,
-            last_name: DataTypes.STRING,
-            email: DataTypes.STRING,
-            password: DataTypes.STRING,
-            status: DataTypes.INTEGER,
-            email_verified: DataTypes.INTEGER,
-            address: DataTypes.STRING,
-            phone_number: DataTypes.STRING,
+            id: {
+                type: DataTypes.INTEGER.UNSIGNED,
+                autoIncrement: true,
+                primaryKey: true,
+            },
+            email: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true,
+            },
+            phone: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
+            password_hash: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            is_verified: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false,
+            },
+            is_active: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: true,
+            },
+            role: {
+                type: DataTypes.STRING,
+                defaultValue: 'user',
+            },
+            email_verified_at: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
+            last_login_at: {
+                type: DataTypes.DATE,
+                allowNull: true,
+            },
+            created_at: {
+                type: DataTypes.DATE,
+                defaultValue: DataTypes.NOW,
+            },
+            updated_at: {
+                type: DataTypes.DATE,
+                defaultValue: DataTypes.NOW,
+            },
         },
         {
             sequelize,
-            modelName: 'user',
+            modelName: 'User',
+            tableName: 'users',
             underscored: true,
+            timestamps: false,
         },
     );
+
     return User;
 };

@@ -2,28 +2,17 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const { Op } = require('sequelize');
 const config = require('../config/config');
+const { PasswordResetToken } = require('../models');
 const { tokenTypes } = require('../config/tokens');
 const TokenDao = require('../dao/TokenDao');
-const RedisService = require('./RedisService');
 
 class TokenService {
     constructor() {
         this.tokenDao = new TokenDao();
-        this.redisService = new RedisService();
     }
-
-    /**
-     * Generate token
-     * @param {string} uuid
-     * @param {Moment} expires
-     * @param {string} type
-     * @param {string} [secret]
-     * @returns {string}
-     */
-
-    generateToken = (uuid, expires, type, secret = config.jwt.secret) => {
+    generateToken = (userId, expires = moment().add(1, 'hour'), type = "access", secret = config.jwt.secret) => {
         const payload = {
-            sub: uuid,
+            sub: userId,
             iat: moment().unix(),
             exp: expires.unix(),
             type,
@@ -31,123 +20,89 @@ class TokenService {
         return jwt.sign(payload, secret);
     };
 
-    verifyToken = async (token, type) => {
-        const payload = await jwt.verify(token, config.jwt.secret, (err, decoded) => {
-            if (err) {
-                throw new Error('Token not found');
-            } else {
-                // if everything is good, save to request for use in other routes
-                return decoded;
-            }
-        });
-
-        const tokenDoc = await this.tokenDao.findOne({
-            token,
-            type,
-            user_uuid: payload.sub,
-            blacklisted: false,
-        });
-        if (!tokenDoc) {
-            throw new Error('Token not found');
-        }
-        return tokenDoc;
-    };
-
-    /**
-     * Save a token
-     * @param {string} token
-     * @param {integer} userId
-     * @param {Moment} expires
-     * @param {string} type
-     * @param {boolean} [blacklisted]
-     * @returns {Promise<Token>}
-     */
-    saveToken = async (token, userId, expires, type, blacklisted = false) => {
+    saveToken = async (token, userId, expires, type) => {
         return this.tokenDao.create({
             token,
             user_id: userId,
-            expires: expires.toDate(),
+            expires_at: expires.toDate(),
             type,
-            blacklisted,
         });
     };
-    /**
-     * Save a multiple token
-     * @param {Object} tokens
-     * @returns {Promise<Token>}
-     */
-
-    saveMultipleTokens = async (tokens) => {
-        return this.tokenDao.bulkCreate(tokens);
-    };
-
-    removeTokenById = async (id) => {
-        return this.tokenDao.remove({ id });
-    };
 
     /**
-     * Generate auth tokens
-     * @param {{}} user
-     * @returns {Promise<Object>}
+     * Verify JWT token and ensure it exists in DB
+     * @param {string} token
+     * @returns {Object} token record
      */
+    verifyToken = async (token) => {
+        const payload = jwt.verify(token, config.jwt.secret);
+        if (!payload || !payload.sub) {
+            throw new Error('Token not valid');
+        }
+
+        const tokenDoc = await PasswordResetToken.findOne({
+            where: {
+                token,
+                user_id: payload.sub,
+                used_at: null,
+                expires_at: { [Op.gt]: moment() },
+            },
+        });
+
+        if (!tokenDoc) {
+            throw new Error('Token not found or expired');
+        }
+
+        return tokenDoc;
+    };
+
+    markTokenUsed = async (token) => {
+        return PasswordResetToken.update(
+            { used_at: moment().toDate() },
+            { where: { token } }
+        );
+    };
+
+    generatePasswordResetToken = async (user, expiresAt = moment().add(1, 'hour')) => {
+        const resetToken = this.generateToken(user.id, expiresAt);
+        await this.saveToken(user.id, resetToken, expiresAt);
+        return resetToken;
+    };
+
+    removeExpiredTokens = async () => {
+        await PasswordResetToken.destroy({
+            where: {
+                expires_at: { [Op.lt]: moment() },
+            },
+        });
+    };
+
     generateAuthTokens = async (user) => {
-        const accessTokenExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
-        const accessToken = await this.generateToken(
-            user.uuid,
-            accessTokenExpires,
-            tokenTypes.ACCESS,
-        );
-        const refreshTokenExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
-        const refreshToken = await this.generateToken(
-            user.uuid,
-            refreshTokenExpires,
-            tokenTypes.REFRESH,
-        );
-        const authTokens = [];
-        authTokens.push({
-            token: accessToken,
-            user_uuid: user.uuid,
-            expires: accessTokenExpires.toDate(),
-            type: tokenTypes.ACCESS,
-            blacklisted: false,
-        });
-        authTokens.push({
-            token: refreshToken,
-            user_uuid: user.uuid,
-            expires: refreshTokenExpires.toDate(),
-            type: tokenTypes.REFRESH,
-            blacklisted: false,
-        });
+        const accessExpires = moment().add(config.jwt.accessExpirationMinutes, 'minutes');
+        const refreshExpires = moment().add(config.jwt.refreshExpirationDays, 'days');
 
-        await this.saveMultipleTokens(authTokens);
-        const expiredAccessTokenWhere = {
-            expires: {
-                [Op.lt]: moment(),
-            },
-            type: tokenTypes.ACCESS,
-        };
-        await this.tokenDao.remove(expiredAccessTokenWhere);
-        const expiredRefreshTokenWhere = {
-            expires: {
-                [Op.lt]: moment(),
-            },
-            type: tokenTypes.REFRESH,
-        };
-        await this.tokenDao.remove(expiredRefreshTokenWhere);
-        const tokens = {
+        const accessToken = this.generateToken(user.id, accessExpires, tokenTypes.ACCESS);
+        const refreshToken = this.generateToken(user.id, refreshExpires, tokenTypes.REFRESH);
+
+        await this.saveToken(accessToken, user.id, accessExpires, tokenTypes.ACCESS);
+        await this.saveToken(refreshToken, user.id, refreshExpires, tokenTypes.REFRESH);
+
+        // cleanup old tokens
+        await this.tokenDao.deleteExpired(tokenTypes.ACCESS);
+        await this.tokenDao.deleteExpired(tokenTypes.REFRESH);
+
+        return {
             access: {
                 token: accessToken,
-                expires: accessTokenExpires.toDate(),
+                expires: accessExpires.toDate(),
             },
             refresh: {
                 token: refreshToken,
-                expires: refreshTokenExpires.toDate(),
+                expires: refreshExpires.toDate(),
             },
         };
-        await this.redisService.createTokens(user.uuid, tokens);
-
-        return tokens;
     };
+
 }
 
 module.exports = TokenService;

@@ -31,7 +31,7 @@ class AuthService {
                     'Invalid Email Address!',
                 );
             }
-            const isPasswordValid = await bcrypt.compare(password, user.password);
+            const isPasswordValid = await bcrypt.compare(password, user.password_hash);
             user = user.toJSON();
             delete user.password;
 
